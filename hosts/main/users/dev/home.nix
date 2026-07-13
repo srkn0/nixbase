@@ -10,8 +10,8 @@
   home.homeDirectory = "/home/dev";
 
   programs.git = {
-    enable   = true;
-    userName = "dev";
+    enable = true;
+    settings.user.name = "dev";
   };
 
   dconf.settings = {

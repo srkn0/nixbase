@@ -44,6 +44,10 @@
     pciutils
     usbutils
 
+    # ai/dev tools
+    claude-code
+    codex
+
     # misc
     fastfetch
     cowsay

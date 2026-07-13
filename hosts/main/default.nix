@@ -26,8 +26,6 @@
       bitwarden-desktop
       bitwarden-cli
       lens
-      code-cursor
-      vscode
       opentabletdriver
       xournalpp
       nfs-utils
@@ -39,10 +37,6 @@
     isNormalUser = true;
     description  = "dev";
     extraGroups  = [ "networkmanager" "docker" ];
-    packages = with pkgs; [
-      code-cursor
-      vscode
-    ];
   };
 
   system.stateVersion = "24.11";
