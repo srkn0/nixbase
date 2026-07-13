@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration — modular, two hosts";
+  description = "NixOS configuration — modular, two hosts, two users each";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
@@ -18,16 +18,27 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.serkan = import ./hosts/main/home.nix;
+          home-manager.users.sk  = import ./hosts/main/users/sk/home.nix;
+          home-manager.users.dev = import ./hosts/main/users/dev/home.nix;
           home-manager.backupFileExtension = "backup";
         }
       ];
     };
 
-    # t230: work machine — home-manager standalone (add hardware.nix when ready)
-    homeConfigurations."serkan@t230" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      modules = [ ./hosts/t230/home.nix ];
+    # t230: second machine (GNOME + PaperWM — add hardware.nix before deploying)
+    nixosConfigurations.t230 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./hosts/t230/default.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.sk  = import ./hosts/t230/users/sk/home.nix;
+          home-manager.users.dev = import ./hosts/t230/users/dev/home.nix;
+          home-manager.backupFileExtension = "backup";
+        }
+      ];
     };
 
   };

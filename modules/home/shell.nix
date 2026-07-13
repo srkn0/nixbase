@@ -31,7 +31,6 @@
       lg     = "lazygit";
       vi     = "nvim";
       vim    = "nvim";
-      update = "sudo nixos-rebuild switch --flake ~/.config/nixbase#main";
     };
 
     history.size = 50000;
