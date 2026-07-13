@@ -8,7 +8,8 @@
   boot.initrd.systemd.enable       = true;
 
   networking.useDHCP   = false;
-  services.resolved    = { enable = true; dnssec = "allow-downgrade"; };
+  services.resolved.enable = true;
+  services.resolved.settings.Resolve.DNSSEC = "allow-downgrade";
 
   time.timeZone = "Europe/Berlin";
 

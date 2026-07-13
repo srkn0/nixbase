@@ -18,8 +18,8 @@
   };
 
   programs.git = {
-    enable   = true;
-    userName = "sk";
+    enable = true;
+    settings.user.name = "sk";
   };
 
   programs.zsh.shellAliases.update =
