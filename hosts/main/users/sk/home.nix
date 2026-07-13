@@ -6,6 +6,7 @@
     ../../../../modules/home/shell.nix
     ../../../../modules/home/terminal.nix
     ../../../../modules/home/tools.nix
+    ../../../../modules/home/editor.nix
   ];
 
   home.username    = "sk";
