@@ -45,7 +45,7 @@
     usbutils
 
     # misc
-    neofetch
+    fastfetch
     cowsay
     glow
     hugo
