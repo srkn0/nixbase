@@ -18,7 +18,6 @@
     extraGroups  = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       thunderbird
-      bitwarden-desktop
       bitwarden-cli
     ];
   };

@@ -23,11 +23,7 @@
     packages = with pkgs; [
       thunderbird
       chromium
-      bitwarden-desktop
       bitwarden-cli
-      lens
-      opentabletdriver
-      xournalpp
       nfs-utils
       tilt
     ];
