@@ -59,8 +59,7 @@
     gnupg
     nix-output-monitor
 
-    # nerd font
-    (nerdfonts.override { fonts = [ "Agave" ]; })
+    nerd-fonts.agave
   ];
 
   fonts.fontconfig.enable = true;
