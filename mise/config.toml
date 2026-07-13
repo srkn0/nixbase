@@ -1,0 +1,32 @@
+# Dev runtimes and CLI tools — managed by mise, not nixpkgs.
+# Run `mise install` after first login.
+# Per-project overrides: add a .mise.toml to the project root.
+
+[settings]
+idiomatic_version_file_enable_tools = ["go", "node", "python"]
+
+[tools]
+# --- language runtimes ---
+go     = "1.26.5"
+node   = "24.18.0"
+python = "3.14.6"
+pnpm   = "11.12.0"
+
+# --- Go tooling ---
+"golangci-lint" = "2.12.2"
+
+# --- editor ---
+neovim = "0.12.4"
+
+# --- dev workflow ---
+lazygit = "0.63.0"
+gh      = "2.96.0"
+
+# --- kubernetes / IaC ---
+kubectl   = "1.36.2"
+kind      = "0.32.0"
+helm      = "3.17.3"
+kustomize = "5.8.1"
+k9s       = "0.51.0"
+kubectx   = "0.11.0"
+terraform = "1.15.8"
