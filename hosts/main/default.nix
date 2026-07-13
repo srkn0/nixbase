@@ -11,6 +11,7 @@
 
   networking.hostName = "main";
   networking.networkmanager.enable = true;
+  networking.networkmanager.dns   = "systemd-resolved";
   networking.extraHosts = ''
     192.168.178.50 gitlab.srkn.me
   '';
