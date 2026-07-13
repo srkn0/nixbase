@@ -3,8 +3,12 @@
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable  = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.systemd.enable       = true;
+
+  networking.useDHCP   = false;
+  services.resolved    = { enable = true; dnssec = "allow-downgrade"; };
 
   time.timeZone = "Europe/Berlin";
 
