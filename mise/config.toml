@@ -4,8 +4,9 @@
 
 [settings]
 idiomatic_version_file_enable_tools = ["go", "node", "python"]
-node.compile   = false
-python.compile = false
+node.compile                  = false
+python.compile                = false
+python.github_attestations    = false
 
 [tools]
 # --- language runtimes ---
