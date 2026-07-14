@@ -44,6 +44,20 @@
     pciutils
     usbutils
 
+    # dev workflow (stable utilities — no per-project versioning benefit)
+    lazygit
+    gh
+    go-task
+    delta
+
+    # secrets management
+    sops
+    age
+
+    # kubernetes utilities (UI/helper tools, no version-pinning benefit)
+    k9s
+    kubectx
+
     # ai/dev tools
     claude-code
     codex

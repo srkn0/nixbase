@@ -4,32 +4,28 @@
 
 [settings]
 idiomatic_version_file_enable_tools = ["go", "node", "python"]
-node.compile                  = false
-python.compile                = false
-python.github_attestations    = false
+node.compile   = false
+python.compile = false
 
 [tools]
-# --- language runtimes ---
+# --- language runtimes (per-project version switching via go.mod / .node-version / .python-version) ---
 go     = "1.26.5"
 node   = "24.18.0"
 python = "3.14.6"
 pnpm   = "11.13.0"
 
-# --- Go tooling ---
+# --- Go tooling (version tied to Go release) ---
 "golangci-lint" = "2.12.2"
 
-# --- editor ---
+# --- editor (bleeding-edge control) ---
 neovim = "0.12.4"
 
-# --- dev workflow ---
-lazygit = "0.63.0"
-gh      = "2.96.0"
+# --- CI workflow ---
+act = "0.2.89"
 
-# --- kubernetes / IaC ---
+# --- kubernetes / IaC (version must match cluster / workspace state) ---
 kubectl   = "1.36.2"
 kind      = "0.32.0"
 helm      = "4.2.3"
 kustomize = "5.8.1"
-k9s       = "0.51.0"
-kubectx   = "0.11.0"
 terraform = "1.15.8"

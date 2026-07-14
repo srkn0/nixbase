@@ -28,6 +28,14 @@
     LC_TIME           = "de_DE.UTF-8";
   };
 
+  environment.systemPackages = with pkgs; [
+    gcc
+    binutils
+    gnumake
+    cmake
+    pkg-config
+  ];
+
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
