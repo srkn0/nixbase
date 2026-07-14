@@ -1,0 +1,26 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    ':dependencyDashboard',
+    ':semanticCommits',
+  ],
+  timezone: 'Europe/Berlin',
+  labels: ['dependencies'],
+  schedule: ['before 6am on monday'],
+  lockFileMaintenance: { enabled: true },
+  fetchChangeLogs: 'pin',
+  nix: { enabled: true },
+  packageRules: [
+    {
+      description: 'Group all flake input bumps into one PR',
+      matchManagers: ['nix'],
+      groupName: 'flake inputs',
+    },
+    {
+      description: 'No auto-merge — NixOS config changes always get a manual look at the CI build first',
+      matchManagers: ['nix', 'github-actions'],
+      automerge: false,
+    },
+  ],
+}
