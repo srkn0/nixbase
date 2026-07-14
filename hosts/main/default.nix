@@ -7,6 +7,7 @@
     ../../modules/system/gnome.nix
     ../../modules/system/nvidia.nix
     ../../modules/system/docker.nix
+    ../../modules/system/mullvad.nix
   ];
 
   networking.hostName = "main";
@@ -35,5 +36,5 @@
     extraGroups  = [ "networkmanager" "docker" ];
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.05";
 }
