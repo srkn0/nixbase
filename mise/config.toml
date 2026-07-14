@@ -4,6 +4,7 @@
 
 [settings]
 idiomatic_version_file_enable_tools = ["go", "node", "python"]
+python_compile = false
 
 [tools]
 # --- language runtimes ---

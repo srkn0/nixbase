@@ -31,5 +31,8 @@
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
+  # Required for dynamically linked binaries installed via mise (node, python, etc.)
+  programs.nix-ld.enable = true;
+
   nixpkgs.config.allowUnfree = true;
 }
