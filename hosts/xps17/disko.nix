@@ -4,7 +4,7 @@
 {
   disko.devices = {
     disk.xps17-nixos = {
-      device = "/dev/disk/by-id/scsi-SNVMe_PC_SN730_NVMe_WDE823_8FA6_BF53_0001_001B_448B_4640_D5BC.";
+      device = "/dev/disk/by-id/nvme-PC_SN730_NVMe_WDC_512GB_194591806841";
       type = "disk";
       content = {
         type = "gpt";
