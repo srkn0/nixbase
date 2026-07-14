@@ -7,8 +7,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.useDHCP = false;
-  services.resolved.enable = true;
-  services.resolved.settings.Resolve.DNSSEC = "allow-downgrade";
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ "1.1.1.1" "9.9.9.9" ];
+    dnssec = "false";
+  };
 
   time.timeZone = "Europe/Berlin";
 

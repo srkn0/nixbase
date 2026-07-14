@@ -23,7 +23,7 @@
   };
 
   programs.zsh.shellAliases.update =
-    "sudo nixos-rebuild switch --flake ~/.config/nixbase#main";
+    "sudo nixos-rebuild switch --flake ~/git/nixbase#main";
 
   dconf.settings = {
     "org/gnome/shell" = {
