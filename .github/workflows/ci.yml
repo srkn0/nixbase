@@ -4,7 +4,9 @@ name: CI
 "on":
   push:
     branches: [main]
+    paths-ignore: ["mise/**"]
   pull_request:
+    paths-ignore: ["mise/**"]
 
 jobs:
   flake-check:
