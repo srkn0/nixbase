@@ -9,8 +9,8 @@
   networking.useDHCP = false;
   services.resolved = {
     enable = true;
-    fallbackDns = [ "1.1.1.1" "9.9.9.9" ];
-    dnssec = "false";
+    settings.Resolve.FallbackDNS = "1.1.1.1 9.9.9.9";
+    settings.Resolve.DNSSEC = "false";
   };
 
   time.timeZone = "Europe/Berlin";
