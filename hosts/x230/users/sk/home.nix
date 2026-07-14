@@ -19,7 +19,8 @@
 
   programs.git = {
     enable = true;
-    settings.user.name = "sk";
+    settings.user.name  = "srkn0";
+    settings.user.email = "srkn0@github";
   };
 
   programs.zsh.shellAliases.update =
