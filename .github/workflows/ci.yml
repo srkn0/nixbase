@@ -10,13 +10,15 @@ jobs:
   flake-check:
     name: nix flake check
     runs-on: ubuntu-latest
-    permissions:
-      id-token: "write"
-      contents: "read"
     steps:
+      - uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          docker-images: false
+          swap-storage: false
+
       - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/flakehub-cache-action@main
 
       - name: nix flake check
         run: nix flake check --no-build
@@ -24,17 +26,19 @@ jobs:
   build:
     name: Build ${{ matrix.host }}
     runs-on: ubuntu-latest
-    permissions:
-      id-token: "write"
-      contents: "read"
     strategy:
       fail-fast: false
       matrix:
         host: [main, t230, vm-test]
     steps:
+      - uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          docker-images: false
+          swap-storage: false
+
       - uses: actions/checkout@v7
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/flakehub-cache-action@main
 
       - name: Build nixosConfigurations.${{ matrix.host }}
         run: nix build ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" --no-link
