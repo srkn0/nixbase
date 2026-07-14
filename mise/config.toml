@@ -10,7 +10,7 @@ idiomatic_version_file_enable_tools = ["go", "node", "python"]
 go     = "1.26.5"
 node   = "24.18.0"
 python = "3.14.6"
-pnpm   = "11.12.0"
+pnpm   = "11.13.0"
 
 # --- Go tooling ---
 "golangci-lint" = "2.12.2"
