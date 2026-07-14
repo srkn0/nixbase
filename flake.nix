@@ -5,9 +5,13 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    sk-ssh-keys = {
+      url = "https://github.com/srkn0.keys";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, sk-ssh-keys, ... }: {
 
     # main: personal desktop (GNOME + PaperWM, Nvidia)
     nixosConfigurations.main = nixpkgs.lib.nixosSystem {
@@ -28,6 +32,7 @@
     # t230: second machine (GNOME + PaperWM — add hardware.nix before deploying)
     nixosConfigurations.t230 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = { inherit sk-ssh-keys; };
       modules = [
         ./hosts/t230/default.nix
         home-manager.nixosModules.home-manager

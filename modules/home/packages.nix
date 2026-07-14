@@ -48,6 +48,12 @@
     claude-code
     codex
 
+    # apps
+    google-chrome
+    obsidian
+    discord
+    spotify
+
     # misc
     fastfetch
     cowsay

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, sk-ssh-keys, ... }:
 
 {
   imports = [
@@ -6,16 +6,26 @@
     ../../modules/system/base.nix
     ../../modules/system/gnome.nix
     ../../modules/system/docker.nix
+    ../../modules/system/mullvad.nix
   ];
 
   networking.hostName = "t230";
   networking.networkmanager.enable = true;
   networking.networkmanager.dns   = "systemd-resolved";
 
+  # bootstrap-only: initial login for first boot, change via `passwd` after.
+  # Keys come from the sk-ssh-keys flake input (github.com/srkn0.keys),
+  # pinned in flake.lock — refresh explicitly with `nix flake update
+  # sk-ssh-keys`, never re-fetched implicitly on a plain rebuild.
+  services.openssh.enable = true;
+  users.users.sk.openssh.authorizedKeys.keys =
+    lib.filter (k: k != "") (lib.splitString "\n" (builtins.readFile sk-ssh-keys));
+
   users.users.sk = {
     isNormalUser = true;
     description  = "Serkan K";
     extraGroups  = [ "networkmanager" "wheel" "docker" ];
+    initialPassword = "123";
     packages = with pkgs; [
       thunderbird
       bitwarden-cli
@@ -26,7 +36,8 @@
     isNormalUser = true;
     description  = "dev";
     extraGroups  = [ "networkmanager" "docker" ];
+    initialPassword = "123";
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.05";
 }
