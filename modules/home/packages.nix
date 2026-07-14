@@ -73,6 +73,7 @@
 
     # misc
     fastfetch
+    cmatrix
     cowsay
     glow
     hugo
