@@ -1,7 +1,3 @@
-# Throwaway QEMU/KVM VM target — mirrors t230's system module list and
-# user accounts so we're testing the same surface, just against VM
-# hardware. Home-manager config (flake.nix) reuses t230's actual
-# home.nix files directly rather than duplicating them.
 { pkgs, ... }:
 
 {

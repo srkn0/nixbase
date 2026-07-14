@@ -9,7 +9,7 @@
     ../../modules/system/mullvad.nix
   ];
 
-  networking.hostName = "t230";
+  networking.hostName = "x230";
   networking.networkmanager.enable = true;
   networking.networkmanager.dns   = "systemd-resolved";
 

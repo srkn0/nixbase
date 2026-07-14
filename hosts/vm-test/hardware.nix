@@ -1,6 +1,3 @@
-# QEMU/KVM test VM (WSL2 host) — deterministic by-label devices so this
-# stays valid across VM reformats, as long as bootstrap-test-vm.sh keeps
-# labeling the ESP "boot" and the root partition "nixos".
 { config, lib, pkgs, modulesPath, ... }:
 
 {

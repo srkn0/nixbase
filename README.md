@@ -12,13 +12,13 @@ hosts/
     users/
       sk/home.nix         full user: shell, terminal, editor, tools
       dev/home.nix        minimal user: shell + tools only
-  t230/                   second machine (GNOME + PaperWM, no Nvidia)
+  x230/                   second machine (GNOME + PaperWM, no Nvidia)
     default.nix
     hardware.nix           TODO placeholder until installed on real hardware
     users/
       sk/home.nix
       dev/home.nix
-  vm-test/                throwaway QEMU/KVM test VM — mirrors t230, see below
+  vm-test/                throwaway QEMU/KVM test VM — mirrors x230, see below
     default.nix
     hardware.nix           deterministic by-label devices (survives reformat)
     authorized_keys
@@ -63,7 +63,7 @@ git clone git@github.com:srkn0/nixbase.git ~/.config/nixbase
 cd ~/.config/nixbase
 
 # apply system + home config
-sudo nixos-rebuild switch --flake .#main   # or .#t230
+sudo nixos-rebuild switch --flake .#main   # or .#x230
 
 # install dev runtimes
 mise install
@@ -76,17 +76,17 @@ update                       # rebuild (alias in each host's sk/home.nix)
 mise use --global node@lts   # add/upgrade a dev tool, commit mise/config.toml
 ```
 
-## Setting Up t230 (Real Hardware)
+## Setting Up x230 (Real Hardware)
 
-`hosts/t230/hardware.nix` is still a TODO placeholder — it's never been run on
+`hosts/x230/hardware.nix` is still a TODO placeholder — it's never been run on
 the actual laptop. Path to a real install:
 
-1. Boot a NixOS installer ISO on the t230.
+1. Boot a NixOS installer ISO on the x230.
 2. Partition + format the disk, mount at `/mnt` (`/` + `/boot` at minimum).
-3. `nixos-generate-config --root /mnt` — replace `hosts/t230/hardware.nix`'s
+3. `nixos-generate-config --root /mnt` — replace `hosts/x230/hardware.nix`'s
    `device = "TODO"` lines with the generated file's real UUIDs/modules.
 4. `git clone git@github.com:srkn0/nixbase.git`, then from inside it:
-   `sudo nixos-install --flake .#t230`
+   `sudo nixos-install --flake .#x230`
 5. `sk`/`dev` start with `initialPassword = "123"` and SSH access is
    preloaded from `github.com/srkn0.keys` (pinned in `flake.lock` as the
    `sk-ssh-keys` input — refresh with `nix flake update sk-ssh-keys`, never
@@ -99,7 +99,7 @@ not a live network call during evaluation.
 ## Testing Changes in a VM
 
 Before touching real hardware, validate a config end-to-end in a throwaway
-QEMU/KVM VM (`hosts/vm-test`, mirrors t230's modules/users against
+QEMU/KVM VM (`hosts/vm-test`, mirrors x230's modules/users against
 deterministic VM hardware):
 
 ```bash

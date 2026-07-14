@@ -1,4 +1,4 @@
-# Run `nixos-generate-config` on the t230 and replace this file with the output.
+# Run `nixos-generate-config` on the x230 and replace this file with the output.
 { lib, modulesPath, ... }:
 
 {
