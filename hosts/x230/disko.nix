@@ -40,7 +40,7 @@
       type = "lvm_vg";
       lvs = {
         swap = {
-          size = "TODO"; # ~1.5x RAM, for hibernation
+          size = "8G"; # placeholder — resize to ~1.5x actual RAM once known
           content = {
             type          = "swap";
             resumeDevice  = true;
@@ -48,7 +48,8 @@
           };
         };
         root = {
-          size = "TODO"; # fixed size, not 100%FREE (LV allocation order isn't guaranteed)
+          size = "100%"; # placeholder — pin to a fixed size once disk is known,
+                          # not 100%FREE (LV allocation order isn't guaranteed)
           content = {
             type       = "filesystem";
             format     = "ext4";
