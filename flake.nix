@@ -41,5 +41,22 @@
       ];
     };
 
+
+    # vm-test: throwaway QEMU/KVM test VM — mirrors t230, VM hardware.nix
+    nixosConfigurations.vm-test = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./hosts/vm-test/default.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.sk  = import ./hosts/t230/users/sk/home.nix;
+          home-manager.users.dev = import ./hosts/t230/users/dev/home.nix;
+          home-manager.backupFileExtension = "backup";
+        }
+      ];
+    };
+
   };
 }
