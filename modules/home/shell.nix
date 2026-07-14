@@ -10,7 +10,7 @@
     oh-my-zsh = {
       enable  = true;
       theme   = "";
-      plugins = [ "git" "aliases" "kubectl" "fzf" "zoxide" ];
+      plugins = [ "git" "aliases" "fzf" "zoxide" ];
     };
 
     shellAliases = {
