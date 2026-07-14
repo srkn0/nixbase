@@ -23,7 +23,15 @@ aliases:
     command: get
     prependArgs: [all]
 
-  # --- describe shortcuts ---
+  # --- watch ---
+  - name: kwatch
+    command: get
+    prependArgs: [pods]
+    options:
+      - name: watch
+        default: "true"
+
+  # --- describe ---
   - name: kdp
     command: describe
     prependArgs: [pod]
@@ -50,9 +58,6 @@ aliases:
   # --- apply / delete ---
   - name: kaf
     command: apply
-    options:
-      - name: filename
-        default: ""
     prependArgs: ["-f"]
 
   - name: kdf
@@ -67,6 +72,34 @@ aliases:
         default: "true"
       - name: tty
         default: "true"
+
+  # --- debug: events sorted by time (most useful for incident response) ---
+  - name: kev
+    command: get
+    prependArgs: [events]
+    options:
+      - name: sort-by
+        default: ".lastTimestamp"
+
+  # --- debug: resource usage ---
+  - name: ktop
+    command: top
+    prependArgs: [pods]
+    options:
+      - name: sort-by
+        default: "cpu"
+
+  - name: ktopn
+    command: top
+    prependArgs: [nodes]
+
+  # --- debug: pods sorted by restart count ---
+  - name: krestart
+    command: get
+    prependArgs: [pods]
+    options:
+      - name: sort-by
+        default: ".status.containerStatuses[0].restartCount"
 
 defaults:
   - command: get

@@ -57,6 +57,9 @@
     # kubernetes utilities (UI/helper tools, no version-pinning benefit)
     k9s
     kubectx
+    kubectl-tree
+    devpod
+    devenv
 
     # ai/dev tools
     claude-code

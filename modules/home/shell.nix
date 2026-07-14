@@ -13,25 +13,61 @@
       plugins = [ "git" "aliases" "kubectl" "fzf" "zoxide" ];
     };
 
-    initContent = ''
-      if command -v mise >/dev/null 2>&1; then
-        eval "$(mise activate zsh)"
-      fi
-    '';
-
     shellAliases = {
       l      = "eza -lah --color=always --icons --group-directories-first";
       la     = "eza -al --color=always --icons --group-directories-first";
       ll     = "eza -l --color=always --icons --group-directories-first";
       lt     = "eza -aT --color=always --icons --group-directories-first";
       fzp    = "fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'";
-      k      = "kubectl";
+      kubectl = "kubecolor";
+      k      = "kubecolor";
       kx     = "kubectx";
       kn     = "kubens";
       lg     = "lazygit";
       vi     = "nvim";
       vim    = "nvim";
     };
+
+    initContent = ''
+      if command -v mise >/dev/null 2>&1; then
+        eval "$(mise activate zsh)"
+      fi
+
+      # exec shell into pod: ksh <pod> [container]
+      ksh() { kubectl exec -it "''${1}" ''${2:+"-c" "''${2}"} -- /bin/sh }
+      kbash() { kubectl exec -it "''${1}" ''${2:+"-c" "''${2}"} -- /bin/bash }
+
+      # spawn ephemeral netshoot debug pod (auto-deleted on exit)
+      knetshoot() { kubectl run netshoot-tmp --rm -it --image=nicolaka/netshoot --restart=Never -- /bin/bash }
+
+      # port-forward: kpf <resource> <port> [remote-port]
+      kpf() { kubectl port-forward "''${1}" "''${2}:''${3:-''${2}}" }
+
+      # find OOMKilled pods across current namespace
+      koom() {
+        kubectl get pods -o json | jq -r '
+          .items[] | . as $pod |
+          .status.containerStatuses[]? |
+          select(.lastState.terminated.reason == "OOMKilled") |
+          [$pod.metadata.name, .name, "OOMKilled"] | join("  ")
+        '
+      }
+
+      # decode all values of a secret
+      ksecret() { kubectl get secret "''${1}" -o json | jq -r '.data | to_entries[] | "\(.key): \(.value | @base64d)"' }
+
+      # show image running in every container across all pods
+      kimgs() { kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.containers[*]}{.image}{"\n"}{end}{end}' | column -t }
+
+      # live diff: running resource vs local file
+      kdiff() { diff <(kubectl get "''${1}" -o yaml | kubectl neat) "''${2}" }
+
+      # get all pods not in Running/Completed state
+      kbad() { kubectl get pods --field-selector='status.phase!=Running,status.phase!=Succeeded' }
+
+      # quick rollout restart
+      krollout() { kubectl rollout restart "''${1}" }
+    '';
 
     history.size = 50000;
   };
