@@ -37,6 +37,8 @@
       specialArgs = { inherit sk-ssh-keys; };
       modules = [
         ./hosts/x230/default.nix
+        ./hosts/x230/disko.nix
+        disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;

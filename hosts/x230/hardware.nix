@@ -1,4 +1,7 @@
-# Run `nixos-generate-config` on the x230 and replace this file with the output.
+# disko.nix owns fileSystems/swapDevices/luks.devices for this host — run
+# `nixos-generate-config --no-filesystems --root /mnt` and paste only the
+# hardware-detected bits below (kernel modules etc.), not any fileSystems.*
+# or swapDevices.
 { lib, modulesPath, ... }:
 
 {
@@ -10,19 +13,6 @@
   boot.initrd.kernelModules          = [ ];
   boot.kernelModules                 = [ ];
   boot.extraModulePackages           = [ ];
-
-  fileSystems."/" = {
-    device = "TODO";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device  = "TODO";
-    fsType  = "vfat";
-    options = [ "fmask=0077" "dmask=0077" ];
-  };
-
-  swapDevices = [ ];
 
   networking.useDHCP    = lib.mkDefault true;
   nixpkgs.hostPlatform  = lib.mkDefault "x86_64-linux";
