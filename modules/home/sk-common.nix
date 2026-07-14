@@ -12,6 +12,8 @@
   home.username    = "sk";
   home.homeDirectory = "/home/sk";
 
+  home.file.".kube/kuberc".source = ../../config/kuberc;
+
   xresources.properties = {
     "Xcursor.size" = 16;
     "Xft.dpi"      = 172;

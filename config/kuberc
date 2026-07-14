@@ -1,0 +1,75 @@
+apiVersion: kubectl.config.k8s.io/v1beta1
+kind: Preference
+
+aliases:
+  # --- get shortcuts ---
+  - name: kgp
+    command: get
+    prependArgs: [pods]
+
+  - name: kgs
+    command: get
+    prependArgs: [services]
+
+  - name: kgd
+    command: get
+    prependArgs: [deployments]
+
+  - name: kgn
+    command: get
+    prependArgs: [nodes]
+
+  - name: kga
+    command: get
+    prependArgs: [all]
+
+  # --- describe shortcuts ---
+  - name: kdp
+    command: describe
+    prependArgs: [pod]
+
+  - name: kdd
+    command: describe
+    prependArgs: [deployment]
+
+  # --- logs ---
+  - name: kl
+    command: logs
+    options:
+      - name: follow
+        default: "true"
+
+  - name: klp
+    command: logs
+    options:
+      - name: follow
+        default: "true"
+      - name: previous
+        default: "true"
+
+  # --- apply / delete ---
+  - name: kaf
+    command: apply
+    options:
+      - name: filename
+        default: ""
+    prependArgs: ["-f"]
+
+  - name: kdf
+    command: delete
+    prependArgs: ["-f"]
+
+  # --- exec ---
+  - name: kex
+    command: exec
+    options:
+      - name: stdin
+        default: "true"
+      - name: tty
+        default: "true"
+
+defaults:
+  - command: get
+    options:
+      - name: output
+        default: wide
