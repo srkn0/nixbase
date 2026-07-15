@@ -3,7 +3,7 @@
 {
   disko.devices = {
     disk.x230-nixos = {
-      device = "/dev/disk/by-id/TODO";
+      device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S2RFNXAH308074E";
       type = "disk";
       content = {
         type = "gpt";
@@ -40,7 +40,7 @@
       type = "lvm_vg";
       lvs = {
         swap = {
-          size = "8G"; # placeholder — resize to ~1.5x actual RAM once known
+          size = "24G"; # 16G RAM × 1.5
           content = {
             type          = "swap";
             resumeDevice  = true;
@@ -48,8 +48,7 @@
           };
         };
         root = {
-          size = "100%"; # placeholder — pin to a fixed size once disk is known,
-                          # not 100%FREE (LV allocation order isn't guaranteed)
+          size = "100%FREE";
           content = {
             type       = "filesystem";
             format     = "ext4";

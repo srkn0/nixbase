@@ -31,7 +31,7 @@
       ];
     };
 
-    # x230: second machine (GNOME + PaperWM — add hardware.nix before deploying)
+    # x230: ThinkPad X230 (GNOME + PaperWM, Intel, LUKS passphrase)
     nixosConfigurations.x230 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit sk-ssh-keys; };
@@ -43,8 +43,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.sk  = import ./hosts/x230/users/sk/home.nix;
-          home-manager.users.dev = import ./hosts/x230/users/dev/home.nix;
+          home-manager.users.sk = import ./hosts/x230/users/sk/home.nix;
           home-manager.backupFileExtension = "backup";
         }
       ];
@@ -81,7 +80,6 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.sk  = import ./hosts/x230/users/sk/home.nix;
-          home-manager.users.dev = import ./hosts/x230/users/dev/home.nix;
           home-manager.backupFileExtension = "backup";
         }
       ];

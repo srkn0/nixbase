@@ -50,12 +50,5 @@
     ];
   };
 
-  users.users.dev = {
-    isNormalUser = true;
-    description  = "dev";
-    extraGroups  = [ "networkmanager" "docker" ];
-    initialPassword = "123";
-  };
-
   system.stateVersion = "24.11";
 }
