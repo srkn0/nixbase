@@ -2,7 +2,7 @@
 # `nixos-generate-config --no-filesystems --root /mnt` and paste only the
 # hardware-detected bits below (kernel modules etc.), not any fileSystems.*
 # or swapDevices.
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, modulesPath, ... }:
 
 {
   imports = [

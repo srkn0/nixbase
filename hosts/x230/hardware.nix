@@ -1,3 +1,7 @@
+# disko.nix owns fileSystems/swapDevices/luks.devices for this host — run
+# `nixos-generate-config --no-filesystems --root /mnt` and paste only the
+# hardware-detected bits below (kernel modules etc.), not any fileSystems.*
+# or swapDevices.
 { config, lib, modulesPath, ... }:
 
 {
