@@ -74,6 +74,7 @@
     # misc
     fastfetch
     cmatrix
+    pstree
     cowsay
     glow
     hugo
