@@ -13,25 +13,25 @@
       plugins = [ "git" "aliases" "fzf" "zoxide" ];
     };
 
+    # kubectl-Familie bleibt hier (kubecolor-Wrapper). Alle anderen Aliase
+    # (l/la/ll/lt/fzp/lg/vi/vim + nx*) sind nach cx migriert und kommen jetzt
+    # aus config/cx/aliases.sh — pflegen/anlegen via `cx` (^a). Die
+    # host-spezifischen rebuild-Aliase (update/nxtest/...) liegen pro Host.
     shellAliases = {
-      l      = "eza -lah --color=always --icons --group-directories-first";
-      la     = "eza -al --color=always --icons --group-directories-first";
-      ll     = "eza -l --color=always --icons --group-directories-first";
-      lt     = "eza -aT --color=always --icons --group-directories-first";
-      fzp    = "fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'";
       kubectl = "kubecolor";
-      k      = "kubecolor";
-      kx     = "kubectx";
-      kn     = "kubens";
-      lg     = "lazygit";
-      vi     = "nvim";
-      vim    = "nvim";
+      k       = "kubecolor";
+      kx      = "kubectx";
+      kn      = "kubens";
     };
 
     initContent = ''
       if command -v mise >/dev/null 2>&1; then
         eval "$(mise activate zsh)"
       fi
+
+      # ad-hoc Paket aus nixpkgs starten / in Shell holen
+      nxrun()   { nix run   "nixpkgs#''${1}" "''${@:2}" }   # nxrun cowsay moo
+      nxshell() { nix shell "nixpkgs#''${1}" }               # nxshell ripgrep
 
       # exec shell into pod: ksh <pod> [container]
       ksh() { kubectl exec -it "''${1}" ''${2:+"-c" "''${2}"} -- /bin/sh }

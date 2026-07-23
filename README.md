@@ -1,51 +1,50 @@
 # nixbase
 
-Personal NixOS configuration — two hosts, two users, fully declarative.
+Personal NixOS configuration — two laptops, one user (`sk`), fully declarative.
 
 ## Structure
 
 ```
 hosts/
-  main/                   personal desktop (AMD + Nvidia, GNOME + PaperWM)
-    default.nix           system config + user packages
-    hardware.nix          generated hardware scan
-    users/
-      sk/home.nix         full user: shell, terminal, editor, tools
-      dev/home.nix        minimal user: shell + tools only
-  x230/                   second machine (GNOME + PaperWM, no Nvidia)
+  x230/                   ThinkPad X230 (GNOME + PaperWM, Intel, LUKS via disko)
     default.nix
-    hardware.nix           TODO placeholder until installed on real hardware
-    users/
-      sk/home.nix
-      dev/home.nix
-  vm-test/                throwaway QEMU/KVM test VM — mirrors x230, see below
+    hardware.nix
+    disko.nix             declarative disk layout
+    users/sk/home.nix
+  xps17/                  Dell XPS 17 (GNOME + PaperWM, Nvidia, Secure Boot via lanzaboote)
     default.nix
-    hardware.nix           deterministic by-label devices (survives reformat)
-    authorized_keys
+    hardware.nix
+    disko.nix
+    users/sk/home.nix
 
 modules/
   system/
-    base.nix              bootloader, locale, systemd, zsh default shell
+    base.nix              bootloader, locale, zsh default shell, sudo timestamp sharing
     gnome.nix             GNOME + GDM + PaperWM + audio + printing
     nvidia.nix            Nvidia open kernel driver
     docker.nix            Docker (systemd cgroup driver)
-    mullvad.nix            Mullvad VPN (CLI + GUI)
+    mullvad.nix           Mullvad VPN (CLI + GUI)
+    profiles/
+      common.nix          shared system bundle (base + gnome + docker + mullvad)
   home/
-    packages.nix          CLI tools + apps (browsers, Obsidian, Discord, Spotify) + Agave Nerd Font
+    packages.nix          CLI tools + apps (Chrome, Obsidian, Discord, Spotify, Zed) + Agave Nerd Font
     shell.nix             zsh, starship, atuin, zoxide, direnv, fzf
-    terminal.nix           kitty, tmux
-    tools.nix              mise + mise config
-    editor.nix             nvim config (LazyVim) via xdg.configFile
+    terminal.nix          kitty, tmux
+    tools.nix             mise + config, best-effort `mise install` on rebuild
+    editor.nix            nvim config (LazyVim) via xdg.configFile
+    commands.nix          cx command library + shortcut aliases
+    profiles/
+      sk-common.nix       full "sk" home bundle (imports the leaf modules above)
 
 config/
   nvim/                   LazyVim config (deployed by editor.nix)
+  cx/                     cx command packs + generated aliases
 
 mise/
   config.toml             dev runtimes: go, node, python, kubectl, k9s, helm…
 
-scripts/
-  setup-kvm-wsl.sh        one-time QEMU/KVM/libvirt setup for Ubuntu-on-WSL2
-  bootstrap-test-vm.sh    tears down + recreates the vm-test VM end to end
+pkgs/
+  cx/                     cx TUI (Go) — browsable command library / shortcut manager
 ```
 
 ## Stack
@@ -63,7 +62,7 @@ git clone git@github.com:srkn0/nixbase.git ~/.config/nixbase
 cd ~/.config/nixbase
 
 # apply system + home config
-sudo nixos-rebuild switch --flake .#main   # or .#x230
+sudo nixos-rebuild switch --flake .#x230   # or .#xps17
 
 # install dev runtimes
 mise install
@@ -74,7 +73,32 @@ mise install
 ```bash
 update                       # rebuild (alias in each host's sk/home.nix)
 mise use --global node@lts   # add/upgrade a dev tool, commit mise/config.toml
+cx                           # browse the command library / manage shortcuts
 ```
+
+> **Note:** mise runtimes live outside Nix. `modules/home/tools.nix` runs a
+> best-effort `mise install` on every rebuild via a home-manager activation
+> hook — network-guarded and `|| true`, so it never fails a switch when offline.
+> Run `mise install` manually after a fresh bootstrap if you were offline during
+> the first rebuild.
+
+### `cx` — command library & shortcuts
+
+`cx` (source in `pkgs/cx`, packaged by `modules/home/commands.nix`) browses YAML
+command "packs" in `config/cx/*.yaml` and manages shortcuts:
+
+- browse categories (→/←) or type to fuzzy-search over name + description + command
+- `⏎` puts the selected command on your prompt (editable)
+- **full CRUD in arrow-navigable modal dialogs**: `^n` new command, `^g` new
+  category (sub-category, or a new top-level pack file), `^e` edit, `^x` delete
+  (confirm), `^a` set/edit a command's alias (live conflict check)
+- a command's alias is an inline `alias:` field in its pack. cx owns the pack
+  files and writes them directly — no separate overlay, what you see is the file.
+- aliases compile to `config/cx/aliases.sh`, sourced by zsh **and** bash — a new
+  shell has the alias immediately, no rebuild. `cx --gen-aliases` regenerates it.
+- `$CX_DIR` points at this repo, so pack/alias edits are live without a rebuild.
+- theming via `$CX_THEME` (`mocha` · `tokyonight` · `latte`), animated gradient
+  logo; add icons with `icon: ""` on any pack entry (Nerd Font glyphs).
 
 ## Setting Up x230 (Real Hardware)
 
@@ -98,23 +122,13 @@ not a live network call during evaluation.
 
 ## Testing Changes in a VM
 
-Before touching real hardware, validate a config end-to-end in a throwaway
-QEMU/KVM VM (`hosts/vm-test`, mirrors x230's modules/users against
-deterministic VM hardware):
-
-```bash
-task setup-kvm       # one-time: QEMU/KVM/libvirt/virt-manager on Ubuntu-WSL2
-task vm:bootstrap     # tear down + recreate the VM, install vm-test end-to-end
-task vm:ssh           # ssh in as sk (password 123, or your key)
-task vm:destroy       # stop + remove it
-```
-
-`vm:bootstrap` always starts clean (destroys any existing VM + disk) — it's
-meant to prove a config installs and boots correctly from scratch, not to be
-incremental. See `scripts/bootstrap-test-vm.sh` for what it automates
-(UEFI firmware, live-ISO network bring-up, partitioning, install) and why
-(WSL2 Mirrored networking breaks libvirt's default DHCP — see the script's
-`ensure_default_network`).
+This repo used to carry a `vm-test` host plus WSL2/QEMU automation to validate a
+config end-to-end in a throwaway VM before touching real hardware. Now that the
+laptops run the config directly, that scaffolding was removed — the full
+approach (WSL2 KVM setup, the libvirt mirrored-networking DHCP gotcha,
+blind-keystroke live-ISO automation, partition + `nixos-install`) is written up
+on my blog: **[Testing a NixOS flake config end-to-end in a throwaway WSL2/KVM
+VM](/blog/nixos-flake-vm-test-on-wsl2)**.
 
 ## Adding a New Host
 

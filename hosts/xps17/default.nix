@@ -3,11 +3,8 @@
 {
   imports = [
     ./hardware.nix
-    ../../modules/system/base.nix
-    ../../modules/system/gnome.nix
+    ../../modules/system/profiles/common.nix
     ../../modules/system/nvidia.nix
-    ../../modules/system/docker.nix
-    ../../modules/system/mullvad.nix
   ];
 
   networking.hostName = "xps17";

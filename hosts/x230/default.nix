@@ -3,10 +3,7 @@
 {
   imports = [
     ./hardware.nix
-    ../../modules/system/base.nix
-    ../../modules/system/gnome.nix
-    ../../modules/system/docker.nix
-    ../../modules/system/mullvad.nix
+    ../../modules/system/profiles/common.nix
   ];
 
   networking.hostName = "x230";

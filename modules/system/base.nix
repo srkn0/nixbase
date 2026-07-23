@@ -40,6 +40,16 @@
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
+  # Share sudo's auth timestamp across sk's sessions — including nvim's non-tty
+  # sudo subprocesses (suda / SudoBrowse) — and keep it 30 min. This lets a
+  # single authentication unlock root file access in nvim without sudo ever
+  # grabbing the terminal (which corrupts the TUI). !tty_tickets = one shared
+  # timestamp per user instead of one per tty.
+  security.sudo.extraConfig = ''
+    Defaults:sk timestamp_timeout=30
+    Defaults:sk !tty_tickets
+  '';
+
   # Required for dynamically linked binaries installed via mise (node, python, etc.)
   programs.nix-ld.enable = true;
 

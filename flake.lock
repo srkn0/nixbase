@@ -167,7 +167,7 @@
     "sk-ssh-keys": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-nopiAWFeKLCTDpb08xJl8bO88qKbAoyEI8CdfIUWZGY=",
+        "narHash": "sha256-Ai1IRSRNnCpZOFC1cymQPyKxnzZ02r+Z7NUEf7RMGhI=",
         "type": "file",
         "url": "https://github.com/srkn0.keys"
       },

@@ -70,6 +70,7 @@
     obsidian
     discord
     spotify
+    zed-editor
 
     # misc
     fastfetch
@@ -92,4 +93,23 @@
   ];
 
   fonts.fontconfig.enable = true;
+
+  home.file.".local/share/applications/notion.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Notion
+    GenericName=Workspace
+    Comment=Open Notion
+    Exec=${pkgs.google-chrome}/bin/google-chrome-stable --app=https://www.notion.so
+    Icon=google-chrome
+    Terminal=false
+    Categories=Office;
+  '';
+
+  home.file.".local/share/applications/notion-app-enhanced.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Notion Enhanced
+    Hidden=true
+  '';
 }

@@ -1,0 +1,79 @@
+name: nix
+icon: ""
+desc: NixOS rebuilds, flakes, generations, store
+items:
+  - name: rebuild
+    icon: ""
+    desc: apply your NixOS configuration
+    items:
+      - name: switch (update)
+        desc: build + activate now + add a bootloader entry
+        cmd: sudo nixos-rebuild switch --flake ~/git/nixbase
+      - name: test
+        desc: activate now but NO bootloader entry — safe to try, gone after reboot
+        cmd: sudo nixos-rebuild test --flake ~/git/nixbase
+      - name: boot
+        desc: build + set as default for next boot, do not activate now
+        cmd: sudo nixos-rebuild boot --flake ~/git/nixbase
+      - name: build
+        desc: build the system closure only (-> ./result), do not activate
+        cmd: nixos-rebuild build --flake ~/git/nixbase
+      - name: dry-build
+        desc: show what would be built/downloaded, build nothing
+        cmd: nixos-rebuild dry-build --flake ~/git/nixbase
+      - name: rollback
+        desc: revert to the previous generation
+        cmd: sudo nixos-rebuild switch --rollback
+        alias: nxroll
+  - name: generations
+    icon: ""
+    desc: inspect and clean past system generations
+    items:
+      - name: list
+        desc: list all system generations
+        cmd: nixos-rebuild list-generations
+        alias: nxgen
+      - name: garbage collect
+        desc: delete old generations + collect garbage (frees disk)
+        cmd: sudo nix-collect-garbage -d
+        alias: nxgc
+      - name: optimise store
+        desc: deduplicate identical files in the nix store
+        cmd: nix store optimise
+        alias: nxopt
+  - name: flake
+    icon: ""
+    desc: work with the flake
+    items:
+      - name: update lock
+        desc: bump all inputs in flake.lock
+        cmd: nix flake update --flake ~/git/nixbase
+        alias: nxup
+      - name: check
+        desc: evaluate + build all outputs, run checks
+        cmd: nix flake check ~/git/nixbase
+      - name: show
+        desc: show the flake's outputs as a tree
+        cmd: nix flake show ~/git/nixbase
+  - name: adhoc
+    icon: ""
+    desc: run or enter packages without installing
+    items:
+      - name: run a package
+        desc: run a program straight from nixpkgs (edit the name)
+        cmd: nix run nixpkgs#hello
+      - name: shell with packages
+        desc: drop into a shell with packages on PATH (edit the names)
+        cmd: nix shell nixpkgs#ripgrep nixpkgs#fd
+      - name: search nixpkgs
+        desc: search for a package by name/description (append a term)
+        cmd: nix search nixpkgs
+        alias: nxs
+      - name: repl with pkgs
+        desc: open a repl with nixpkgs in scope
+        cmd: nix repl --expr 'import <nixpkgs> {}'
+        alias: nxrepl
+      - name: why-depends
+        desc: show why one path depends on another (append two installables)
+        cmd: nix why-depends
+        alias: nxwhy

@@ -2,17 +2,18 @@
 
 {
   imports = [
-    ./packages.nix
-    ./shell.nix
-    ./terminal.nix
-    ./tools.nix
-    ./editor.nix
+    ../packages.nix
+    ../shell.nix
+    ../terminal.nix
+    ../tools.nix
+    ../editor.nix
+    ../commands.nix
   ];
 
   home.username    = "sk";
   home.homeDirectory = "/home/sk";
 
-  home.file.".kube/kuberc".source = ../../config/kuberc;
+  home.file.".kube/kuberc".source = ../../../config/kuberc;
 
   xresources.properties = {
     "Xcursor.size" = 16;

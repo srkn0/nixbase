@@ -1,0 +1,69 @@
+name: k8s
+icon: "☸"
+desc: kubectl — inspect, debug, exec, troubleshoot
+items:
+  - name: exec
+    icon: ""
+    desc: get a shell inside a running pod
+    items:
+      - name: sh into pod
+        desc: exec an interactive sh (edit <pod>)
+        cmd: kubectl exec -it <pod> -- /bin/sh
+      - name: bash into pod
+        desc: exec an interactive bash (edit <pod>)
+        cmd: kubectl exec -it <pod> -- /bin/bash
+      - name: sh into container
+        desc: exec into a specific container of a pod (edit <pod> <container>)
+        cmd: kubectl exec -it <pod> -c <container> -- /bin/sh
+  - name: debug
+    icon: ""
+    desc: ephemeral tooling and troubleshooting
+    items:
+      - name: netshoot pod
+        desc: spawn a throwaway netshoot debug pod (auto-deleted on exit)
+        cmd: kubectl run netshoot-tmp --rm -it --image=nicolaka/netshoot --restart=Never -- /bin/bash
+      - name: port-forward
+        desc: forward a local port to a resource (edit <resource> <port>)
+        cmd: kubectl port-forward <resource> <port>:<port>
+  - name: inspect
+    icon: ""
+    desc: find things that are wrong or interesting
+    items:
+      - name: bad pods
+        desc: pods not Running/Succeeded
+        cmd: kubectl get pods --field-selector=status.phase!=Running,status.phase!=Succeeded
+      - name: OOMKilled pods
+        desc: pods whose containers were OOMKilled in current namespace
+        cmd: >-
+          kubectl get pods -o json | jq -r '.items[] | . as $pod |
+          .status.containerStatuses[]? |
+          select(.lastState.terminated.reason == "OOMKilled") |
+          [$pod.metadata.name, .name, "OOMKilled"] | join("  ")'
+      - name: images per pod
+        desc: show the image running in every container of every pod
+        cmd: >-
+          kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range
+          .spec.containers[*]}{.image}{"\n"}{end}{end}' | column -t
+      - name: decode secret
+        desc: decode all values of a secret (edit <name>)
+        cmd: "kubectl get secret <name> -o json | jq -r '.data | to_entries[] | \"\\(.key): \\(.value | @base64d)\"'"
+  - name: rollout
+    icon: ""
+    desc: manage rollouts
+    items:
+      - name: restart
+        desc: rollout restart a resource (edit <resource>, e.g. deploy/foo)
+        cmd: kubectl rollout restart <resource>
+      - name: status
+        desc: watch rollout status (edit <resource>)
+        cmd: kubectl rollout status <resource>
+  - name: context
+    icon: ""
+    desc: switch context and namespace
+    items:
+      - name: switch context
+        desc: interactively switch kube context
+        cmd: kubectx
+      - name: switch namespace
+        desc: interactively switch namespace
+        cmd: kubens

@@ -1,0 +1,41 @@
+name: shell
+desc: everyday shell — files, editor, git
+items:
+  - name: files
+    desc: listing with eza
+    items:
+      - name: list
+        desc: list
+        cmd: eza -lah --color=always --icons --group-directories-first
+        alias: l
+      - name: list all (long)
+        desc: long listing incl. hidden, icons, dirs first
+        cmd: eza -al --color=always --icons --group-directories-first
+        alias: la
+      - name: list (long)
+        desc: long listing, dirs first
+        cmd: eza -l --color=always --icons --group-directories-first
+        alias: ll
+      - name: tree
+        desc: recursive tree incl. hidden
+        cmd: eza -aT --color=always --icons --group-directories-first
+        alias: lt
+      - name: fuzzy-find with preview
+        desc: fzf with a bat preview of the file
+        cmd: fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'
+        alias: fzp
+  - name: editor & git
+    desc: neovim and lazygit
+    items:
+      - name: neovim
+        desc: open neovim
+        cmd: nvim
+        alias: vim
+      - name: neovim (vi)
+        desc: open neovim (vi alias)
+        cmd: nvim
+        alias: vi
+      - name: lazygit
+        desc: terminal git UI
+        cmd: lazygit
+        alias: lg
